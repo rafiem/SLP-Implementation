@@ -65,7 +65,7 @@ class SLP():
     else:
       return 0
 
-
+  # Fungsi untuk plotting data akurasi dan loss menjadi grafik
   def plotting(self):
     plt.figure(1)
     plt.plot(self.akurasi_train_epoch, color='red', label='Train')
@@ -85,8 +85,8 @@ class SLP():
 
     plt.show()
 
-
-  
+  # Fungsi untuk mulai proses utama training dan validasi data
+  # Hasil dari fungsi ini adalah me-set nilai rata-rata dari akurasi dan loss dari training dan validasi
   def start(self):
     data = [self.data[i:i+20] for i in range(0,100,+20)]
 
@@ -122,7 +122,8 @@ class SLP():
       self.akurasi_validasi_epoch.append(akurasi_validasi/self.kfold)
       self.loss_validasi_epoch.append(loss_validasi/self.kfold)
 
-
+  # Fungsi training menggunakan 4 segmen dari 100 data yang dibagi 5
+  # Output yang dikeluarkan berupa theta dan bias yang di-update serta akurasi dan loss
   def training(self, training_data, theta, bias):
     akurasi = 0
     loss    = 0
@@ -144,6 +145,8 @@ class SLP():
 
     return {"theta": theta, "bias": bias, "akurasi": akurasi/len(training_data), "loss": loss/len(training_data)}
 
+  # Fungsi validasi menggunakan 1 segmen dari 100 data yang dibagi 5
+  # Output yang dikeluarkan adalah akurasi dan loss 
   def validasi(self, validating_data, theta, bias):
     akurasi = 0
     loss    = 0
@@ -163,12 +166,16 @@ class SLP():
     
 # Main Program, Inisiasi nilai awal untuk Learning
 if __name__ == '__main__':
+  # Inisiasi nilai awal
   thetas      = [0.4, 0.6, 0.5, 0.3]
   bias        = 0.5
-  alpha       = 0.1
-  epoch       = 360
+  alpha       = 0.8
+  epoch       = 20
   kfold       = 5
 
+  # Inisiasi awal class SLP dengan nilai yang sudah ditentukan
   klasifikasi = SLP(thetas, bias, alpha, "data_iris.csv", epoch, kfold)
+  # Mulai start proses training dan validasi data
   klasifikasi.start()
+  # Menampilkan grafik rata-rata akurasi dan loss dari training dan validasi
   klasifikasi.plotting()
